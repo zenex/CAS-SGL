@@ -1,0 +1,39 @@
+# ╔═╗╦╔═╔═╗╦  ╔═╗╔╦╗╔═╗╔╗╔╔═╗╦
+# ╚═╗╠╩╗║╣ ║  ║╣  ║ ║ ║║║║║ ╦║
+# ╚═╝╩ ╩╚═╝╩═╝╚═╝ ╩ ╚═╝╝╚╝╚═╝╩═╝
+# ─┐ ┬┌─┐┌┐┌┌─┐┌┐ ┬ ┬┌┬┐┌─┐ ─┐ ┬┬ ┬┌─┐
+# ┌┴┬┘├┤ ││││ │├┴┐└┬┘ │ ├┤  ┌┴┬┘└┬┘┌─┘
+# ┴ └─└─┘┘└┘└─┘└─┘ ┴  ┴ └─┘o┴ └─ ┴ └─┘
+# Author:  SENEX @ XENOBYTE.XYZ
+# License: MIT License
+# Website: https://xenobyte.xyz/projects/?nav=skeletongl
+
+CC=clang
+
+LDFLAGS= -g -Wall -fPIC -m64 -lm -lstdc++ -std=c++14 $(shell pkg-config --cflags --libs sdl2)  $(shell pkg-config --cflags --libs freetype2) $(shell pkg-config glew --cflags --libs) -pthread -lglut libsgl.a
+
+# SkeletonGL core files
+SOURCES= src/main.cpp \
+		 src/window.cpp \
+		 src/cell_auto_simulation.cpp
+
+
+OBJECTS=$(SOURCES:.cpp=.o)
+
+EXECUTABLE=cas-sgl
+
+all: $(SOURCES) $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC)  $(OBJECTS) $(LDFLAGS) -o $@
+
+.cpp.o:
+	$(CC) $< $(LDFLAGS) -c -o $@
+
+
+clean:
+	rm -rf src/*.o
+	rm -rf src/skeletonGL/*.o
+	rm -rf src/skeletonGL/renderer/*.o
+	rm -rf src/skeletonGL/window/*.o
+	rm -rf src/skeletonGL/utility/*.o

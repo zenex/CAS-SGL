@@ -1,0 +1,61 @@
+# ╔═╗╦╔═╔═╗╦  ╔═╗╔╦╗╔═╗╔╗╔╔═╗╦
+# ╚═╗╠╩╗║╣ ║  ║╣  ║ ║ ║║║║║ ╦║
+# ╚═╝╩ ╩╚═╝╩═╝╚═╝ ╩ ╚═╝╝╚╝╚═╝╩═╝
+# ─┐ ┬┌─┐┌┐┌┌─┐┌┐ ┬ ┬┌┬┐┌─┐ ─┐ ┬┬ ┬┌─┐
+# ┌┴┬┘├┤ ││││ │├┴┐└┬┘ │ ├┤  ┌┴┬┘└┬┘┌─┘
+# ┴ └─└─┘┘└┘└─┘└─┘ ┴  ┴ └─┘o┴ └─ ┴ └─┘
+# Author:  SENEX @ XENOBYTE.XYZ
+# License: MIT License
+# Website: https://xenobyte.xyz/projects/?nav=skeletongl
+SGL_SPECIFIC =
+
+# SkeletonGL core files
+SRC= 	 src/skeletonGL/window/SGL_Window.cpp \
+		 src/skeletonGL/utility/SGL_AssetManager.cpp \
+		 src/skeletonGL/utility/SGL_Utility.cpp \
+		 src/skeletonGL/renderer/SGL_OpenGLManager.cpp \
+		 src/skeletonGL/renderer/SGL_Shader.cpp \
+		 src/skeletonGL/renderer/SGL_Texture.cpp \
+		 src/skeletonGL/renderer/SGL_PostProcessor.cpp \
+		 src/skeletonGL/renderer/SGL_Camera.cpp \
+		 src/skeletonGL/renderer/SGL_Renderer.cpp
+
+OBJ = $(SRC:.cpp=.o)
+
+OUT = libsgl.a
+
+# include directories
+INCLUDES = $(shell pkg-config --cflags --libs --static sdl2)  $(shell pkg-config --cflags --libs --static freetype2) $(shell pkg-config glew --cflags --libs --static)
+
+# C++ compiler flags (-g -O2 -Wall)
+CCFLAGS = -g -Wall -std=c++14 -fPIC
+
+# compiler
+CCC = clang
+
+# library paths
+LIBS = -lm -lstdc++ -pthread -lglut -lGL -lGLU -lGLEW -lfreetype -I/usr/local/include/SDL2 -lSDL2 
+
+# compile flags
+LDFLAGS = $(SGL_SPECIFIC) -g -fPIC
+
+.SUFFIXES: .cpp
+
+# default: dep $(OUT)
+
+.cpp.o:
+	$(CCC) $(INCLUDES) $(CCFLAGS) -c $< -o $@
+
+$(OUT): $(OBJ)
+	ar rcs $(OUT) $(OBJ)
+
+# depend: dep
+
+# dep:
+# 	makedepend -- $(CFLAGS) -- $(INCLUDES) $(SRC)
+
+clean:
+	rm -rf src/skeletonGL/*.o
+	rm -rf src/skeletonGL/renderer/*.o
+	rm -rf src/skeletonGL/window/*.o
+	rm -rf src/skeletonGL/utility/*.o
