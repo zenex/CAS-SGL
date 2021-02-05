@@ -37,7 +37,7 @@ sudo apt-get install libsdl2-dev libglew-dev libfreetype6-dev
 
   2. Clone the CAS-SGL source and compile
   #+BEGIN_SRC 
-git clone [[https://github.com/zenex/cas-sgl]]
+git clone https://git.xenobyte.xyz/XENOBYTE/cas-sgl
 cd cas-sgl/
 make
 ./cas-sgl
